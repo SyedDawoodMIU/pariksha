@@ -1,0 +1,122 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pariksha - Admin Dashboard</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="container mt-5">
+    <h1 class="text-center">Admin Dashboard</h1>
+
+    <!-- Login Form -->
+    <div id="login-form">
+      <h3>Admin Login</h3>
+      <form id="admin-login-form">
+        <div class="form-group">
+          <label for="admin-username">Username</label>
+          <input type="text" class="form-control" id="admin-username" required>
+        </div>
+        <div class="form-group">
+          <label for="admin-password">Password</label>
+          <input type="password" class="form-control" id="admin-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+
+    <!-- Add Scholarship Form -->
+    <div id="add-scholarship-form" style="display: none;">
+      <h3>Add Scholarship</h3>
+      <form id="scholarship-form">
+        <div class="form-group">
+          <label for="university-name">University Name</label>
+          <input type="text" class="form-control" id="university-name" required>
+        </div>
+        <div class="form-group">
+          <label for="scholarship-title">Scholarship Title</label>
+          <input type="text" class="form-control" id="scholarship-title" required>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea class="form-control" id="description" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="deadline">Application Deadline</label>
+          <input type="date" class="form-control" id="deadline" required>
+        </div>
+        <div class="form-group">
+          <label for="minimum-requirements">Minimum Requirements (comma-separated)</label>
+          <input type="text" class="form-control" id="minimum-requirements" required>
+        </div>
+        <button type="submit" class="btn btn-success">Add Scholarship</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Handle admin login
+      $('#admin-login-form').on('submit', function (e) {
+        e.preventDefault();
+        const username = $('#admin-username').val();
+        const password = $('#admin-password').val();
+
+        // API call to login admin
+        $.ajax({
+          url: 'http://localhost:5000/api/admin/login',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ username, password }),
+          success: function (response) {
+            alert('Login successful');
+            localStorage.setItem('token', response.token);
+            $('#login-form').hide();
+            $('#add-scholarship-form').show();
+          },
+          error: function () {
+            alert('Invalid credentials. Please try again.');
+          }
+        });
+      });
+
+      // Handle add scholarship form submission
+      $('#scholarship-form').on('submit', function (e) {
+        e.preventDefault();
+        const scholarshipData = {
+          universityName: $('#university-name').val(),
+          title: $('#scholarship-title').val(),
+          description: $('#description').val(),
+          deadline: $('#deadline').val(),
+          minimumRequirements: $('#minimum-requirements').val().split(',')
+        };
+
+        // Post scholarship data to backend API
+        $.ajax({
+          url: 'http://localhost:5000/api/scholarships',
+          method: 'POST',
+          contentType: 'application/json',
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          },
+          data: JSON.stringify(scholarshipData),
+          success: function () {
+            alert('Scholarship added successfully');
+            $('#scholarship-form')[0].reset();
+          },
+          error: function (message) {
+            alert('Error adding scholarship. Ensure you are logged in.'+message);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

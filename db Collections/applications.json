@@ -1,0 +1,3 @@
+{"_id":{"$oid":"670c7e07efd583b005e01e20"},"scholarship":{"$oid":"670c7ce485dbd49095c674e6"},"studentName":"Syed Dawood","email":"dawood@gmail.com","additionalDetails":"a","appliedAt":{"$date":"2024-10-14T02:12:23.1Z"},"__v":0}
+{"_id":{"$oid":"670c8014be77d84f2044abe1"},"studentName":"John Doe","email":"john.doe@example.com","scholarshipId":{"$oid":"670c7ce485dbd49095c674e6"}}
+{"_id":{"$oid":"670c88008abea506f6a46e47"},"scholarship":{"$oid":"670c7ce485dbd49095c674e6"},"studentName":"Syed Dawood","email":"dawood@gmail.com","additionalDetails":"asddas","appliedAt":{"$date":"2024-10-14T02:54:56.425Z"},"__v":0}
